@@ -56,11 +56,6 @@ spec:
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
-    - id: process
-      name: Run script
-      action: hmcts:script
-      input:
-        scriptPath: bin/code-gen.sh
     - id: publish
       name: Publish
       action: publish:github
