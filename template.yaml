@@ -27,21 +27,6 @@ spec:
           title: Component
           type: string
           description: Name of the component, e.g. java-client
-        group_id:
-          title: Group ID
-          type: string
-          default: uk.gov.hmcts
-        artifact_id:
-          title: Artifact ID
-          type: string
-          description: Should not include 'python', e.g. payments
-        openapi_url:
-          title: URL to OpenAPI spec
-          type: string
-        slack_contact_channel:
-          title: Slack contact channel
-          type: string
-          description: Which channel (or user) to contact if there's any issues with this service.
         description:
           title: Description
           type: string
