@@ -13,28 +13,17 @@ spec:
     - title: Provide some simple information
       required:
         - product
-        - component
         - owner
-        - group_id
-        - artifact_id
-        - slack_contact_channel
       properties:
         product:
           title: Product
           type: string
           description: Product this component belongs to, normally the team name, e.g. cmc
-        component:
-          title: Component
-          type: string
-          description: Name of the component, e.g. java-client
         description:
           title: Description
           type: string
-          description: Description of the client, a sensible default will be used if not specified.
-        github_admin_team:
-          title: GitHub admin team
-          type: string
-          description: Which GitHub team should have admin permissions, use the format hmcts/<team-id>?
+          description: Description of the client, a sensible default will be used if not
+            specified.
         owner:
           title: Owner
           type: string
@@ -54,7 +43,6 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-
   steps:
     - id: template
       name: Fetch Skeleton + Template
@@ -62,16 +50,12 @@ spec:
       input:
         url: ./skeleton
         values:
-          product: '${{ parameters.product }}'
-          component: '${{ parameters.component }}'
-          app_full_name: '${{ parameters.product }}-${{ parameters.component }}'
-          description: '${{ parameters.description }}'
-          owner: '${{ parameters.owner }}'
-          destination: '${{ parameters.repoUrl | parseRepoUrl }}'
-          slack_contact_channel: ${{ parameters.slack_contact_channel }}
-          group_id: '${{ parameters.group_id }}'
-          artifact_id: '${{ parameters.artifact_id }}'
-          openapi_url: '${{ parameters.openapi_url }}'
+          product: ${{ parameters.product }}
+          component: ${{ parameters.component }}
+          app_full_name: ${{ parameters.product }}-${{ parameters.component }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
     - id: process
       name: Run script
       action: hmcts:script
@@ -81,7 +65,8 @@ spec:
       name: Publish
       action: publish:github
       input:
-        allowedHosts: ['github.com']
+        allowedHosts:
+          - github.com
         repoUrl: ${{ parameters.repoUrl }}
         access: ${{ parameters.github_admin_team }}
         requireCodeOwnerReviews: true
@@ -92,8 +77,8 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
-        catalogInfoPath: '/catalog-info.yaml'
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
   output:
-    remoteUrl: '${{ steps.publish.output.remoteUrl }}'
-    entityRef: '${{ steps.register.output.entityRef }}'
+    remoteUrl: ${{ steps.publish.output.remoteUrl }}
+    entityRef: ${{ steps.register.output.entityRef }}
